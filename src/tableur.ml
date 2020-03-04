@@ -71,14 +71,9 @@ let cycle (gr:grille) (ex:expr) =
                     else (
                       listCase := !listCase @ [t] ;
                       testCycle gr.(i).(j))
-      |Unaire u -> (match u.operande with
-                    |Case (i, j) as t -> testCycle t
-                    |_-> false)
-      |Binaire b -> (match (b.gauche, b.droite) with
-          |(Case (i, j), Case(k, l)) -> (testCycle (Case(i, j))) || (testCycle (Case(k,l)))
-          |(Case (i, j), _) -> testCycle (Case(i, j))
-          |(_, Case (i, j)) ->  testCycle (Case(i, j))
-          | (_, _) -> false  )
+      |Unaire u -> testCycle u.operande
+      |Binaire b -> testCycle b.gauche || testCycle b.droite
+
       |_ -> false
       in
     testCycle ex
@@ -96,7 +91,9 @@ let rec eval_expr (grille : grille) (expr : expr) =
     |Vide -> RVide
     |Flottant i -> RFlottant i
     |Chaine c -> RChaine c
-    |_ -> RVIDE
+    |Unaire u -> u.app1 (eval_expr grille u.operande)
+    |Binaire b -> b.app2 (eval_expr grille b.gauche) (eval_expr grille b.droite)
+    |_ -> RVide
 
 let cree_grille_resultat i j  =
     Array.make_matrix i j RVide
