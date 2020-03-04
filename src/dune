@@ -1,0 +1,15 @@
+(library
+ (name tableur)
+ (modules tableur)
+)
+
+(executable
+ (name test_tableur)
+ (libraries tableur)
+ (modules test_tableur)
+ (flags (:standard))
+)
+
+(rule
+ (alias runtest)
+ (action (run %{exe:test_tableur.exe})))
