@@ -35,16 +35,26 @@ exception Pas_encore_implemente of string
 let cree_grille i j  =
     Array.make_matrix i j Vide
 
-let expr_to_string expr =
+let res_to_string expr =
+    match expr with
+    |RVide -> ""
+    |REntier i -> string_of_int i
+    |RFlottant i-> string_of_float i
+    |RChaine  s-> s
+    |Erreur e-> match e with
+      |Mauvais_indice (i,j) -> "Mauvais indice " ^"("^string_of_int i^","^string_of_int j^")"
+      |Cycle_detecte (i,j) -> "Cycle Present"^"("^string_of_int i^","^string_of_int j^")"
+
+let rec expr_to_string expr =
     match expr with
     |Vide -> ""
     |Entier i -> string_of_int i
     |Flottant i-> string_of_float i
     |Chaine  s-> s
     |Case (i, j) -> "@("^(string_of_int i)^","^(string_of_int j)^")"
-    |Unaire e -> ""
-    |Binaire b -> ""
-    |Reduction r -> ""
+    |Unaire e -> "u("^(expr_to_string e.operande)^")"
+    |Binaire b -> "b("^(expr_to_string b.gauche)^","^(expr_to_string b.droite)^")"
+    |Reduction r -> "r("^(expr_to_string (Case(fst r.case_debut, snd r.case_debut)))^","^(expr_to_string (Case(fst r.case_fin, snd r.case_fin)))^")"
 
 let affiche_grille (gr:grille) =
     Array.iter (
@@ -61,6 +71,14 @@ let cycle (gr:grille) (ex:expr) =
                     else (
                       listCase := !listCase @ [t] ;
                       testCycle gr.(i).(j))
+      |Unaire u -> (match u.operande with
+                    |Case (i, j) as t -> testCycle t
+                    |_-> false)
+      |Binaire b -> (match (b.gauche, b.droite) with
+          |(Case (i, j), Case(k, l)) -> (testCycle (Case(i, j))) || (testCycle (Case(k,l)))
+          |(Case (i, j), _) -> testCycle (Case(i, j))
+          |(_, Case (i, j)) ->  testCycle (Case(i, j))
+          | (_, _) -> false  )
       |_ -> false
       in
     testCycle ex
@@ -78,6 +96,7 @@ let rec eval_expr (grille : grille) (expr : expr) =
     |Vide -> RVide
     |Flottant i -> RFlottant i
     |Chaine c -> RChaine c
+    |_ -> RVIDE
 
 let cree_grille_resultat i j  =
     Array.make_matrix i j RVide
@@ -90,17 +109,6 @@ let eval_grille (grille : grille) =
       done;
     done;
     res
-
-let res_to_string expr =
-    match expr with
-    |RVide -> ""
-    |REntier i -> string_of_int i
-    |RFlottant i-> string_of_float i
-    |RChaine  s-> s
-    |Erreur e-> match e with
-      |Mauvais_indice e-> "Mauvais indice"
-      |Cycle_detecte e -> "Cycle Present"
-
 
 let affiche_grille_resultat (grille_res:grille_resultat) =
     Array.iter (
