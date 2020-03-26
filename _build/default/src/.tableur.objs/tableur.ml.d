@@ -1,1 +1,1 @@
-src/tableur.ml: Array Format List
+src/tableur.ml: Array Format Set

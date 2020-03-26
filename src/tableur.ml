@@ -33,6 +33,12 @@ type grille_resultat = resultat array array
 exception Pas_encore_implemente of string
 exception Cycle_detecte
 
+
+module CaseSet = Set.Make(struct
+  type t = int*int
+  let compare = compare
+end)
+
 let cree_grille i j  =
     Array.make_matrix i j Vide
 
@@ -63,24 +69,24 @@ let affiche_grille (gr:grille) =
         fun j -> Format.printf "|%8s|" (expr_to_string j)) i;print_newline()) gr
 
 let cycle (gr:grille) (ex:expr) =
-    let listCase = ref [] in
+    let ensemble_case = ref CaseSet.empty in
     let rec testCycle e =
       match e with
-      | Case (i, j) as t ->
-                    if List.mem t !listCase then
+      | Case (i, j) ->
+                    if CaseSet.mem (i,j) !ensemble_case then
                       true
                     else (
-                      listCase := !listCase @ [t] ;
+                      ensemble_case := CaseSet.add (i,j) !ensemble_case;
                       testCycle gr.(i).(j))
       |Unaire u -> testCycle u.operande
       |Binaire b -> testCycle b.gauche || testCycle b.droite
       |Reduction r -> (try 
                         for i=(fst r.case_debut) to (fst r.case_fin) do 
                           for j=(snd r.case_fin) to (snd r.case_fin) do 
-                              if List.mem (Case(i, j)) !listCase then
+                              if CaseSet.mem (i,j) !ensemble_case then
                                 raise Cycle_detecte
                               else 
-                                listCase := !listCase @ [Case(i, j)] ;
+                                ensemble_case := CaseSet.add (i,j) !ensemble_case;
                                 let t = testCycle gr.(i).(j) in
                                 if t then
                                   raise Cycle_detecte 
