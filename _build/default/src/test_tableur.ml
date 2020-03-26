@@ -7,8 +7,7 @@ let test1 () =
 let test2 () =
   let grille = cree_grille 10 10 in
   grille.(0).(0) <- Entier 1 ;
-  assert (grille.(0).(0) = Entier 1) ;
-  ()
+  assert (grille.(0).(0) = Entier 1)
 
 let run_tests () =
   let liste_tests =
@@ -25,4 +24,4 @@ let run_tests () =
     liste_tests
 
 (* Main *)
-let () = run_tests ()
+let _  = run_tests ()

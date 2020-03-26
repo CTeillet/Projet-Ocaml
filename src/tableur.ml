@@ -31,6 +31,7 @@ type grille_resultat = resultat array array
 (** Fonctions *)
 
 exception Pas_encore_implemente of string
+exception Cycle_detecte
 
 let cree_grille i j  =
     Array.make_matrix i j Vide
@@ -73,7 +74,22 @@ let cycle (gr:grille) (ex:expr) =
                       testCycle gr.(i).(j))
       |Unaire u -> testCycle u.operande
       |Binaire b -> testCycle b.gauche || testCycle b.droite
-
+      |Reduction r -> (try 
+                        for i=(fst r.case_debut) to (fst r.case_fin) do 
+                          for j=(snd r.case_fin) to (snd r.case_fin) do 
+                              if List.mem (Case(i, j)) !listCase then
+                                raise Cycle_detecte
+                              else 
+                                listCase := !listCase @ [Case(i, j)] ;
+                                let t = testCycle gr.(i).(j) in
+                                if t then
+                                  raise Cycle_detecte 
+                          done
+                        done;
+                        false
+                      with
+                        | Cycle_detecte -> true
+                       )
       |_ -> false
       in
     testCycle ex
@@ -112,7 +128,7 @@ let affiche_grille_resultat (grille_res:grille_resultat) =
       fun i -> Array.iter (
         fun j -> Format.printf "|%8s|" (res_to_string j)) i;print_newline()) grille_res
 
-let r = cree_grille 10 10;;
+(**let r = cree_grille 10 10;;
 r.(1).(1) <- Entier(1);;
 r.(1).(2) <- Case(2, 1);;
 r.(2).(1) <- Case(1, 4);;
@@ -120,4 +136,4 @@ r.(1).(4) <- Case(5, 5);;
 r.(5).(5) <- Case(6, 5);;
 r.(6).(5) <- Case(1, 2);;
 print_string (string_of_bool (cycle r (Case(1, 2))));;
-affiche_grille r;;
+affiche_grille r;;**)
