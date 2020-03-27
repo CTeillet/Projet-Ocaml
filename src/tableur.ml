@@ -169,3 +169,23 @@ let add (a:expr) (b:expr)=
 
 (*let somme (case_debut:(int*int)) (case_fin:(int*int)) =
   *)
+
+let oppose (v:expr) =
+  let f (r:resultat) = 
+    match  r with 
+      | REntier e -> REntier (-e)
+      | RFlottant f -> RFlottant (-.f)
+      | _ -> Erreur (Mauvais_argument ("Attendus un entier ou flottant mais argument de type "^(type_res_to_string r))) 
+  in
+  let t = {app1=f; operande=v} in
+  Unaire(t)
+
+let inverse (v:expr) =
+  let f (r:resultat) = 
+    match  r with 
+      | REntier e -> REntier (1/e)
+      | RFlottant f -> RFlottant (1./.f)
+      | _ -> Erreur (Mauvais_argument ("Attendus un entier ou flottant mais argument de type "^(type_res_to_string r))) 
+  in
+  let t = {app1=f; operande=v} in
+  Unaire(t)
