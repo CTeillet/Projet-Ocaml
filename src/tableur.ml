@@ -9,6 +9,7 @@ type resultat =
 and erreur =
   |Mauvais_indice of (int * int)
   |Cycle_detecte of (int * int)
+  |Mauvais_argument of string
 
 type expr =
   | Vide
@@ -42,6 +43,15 @@ end)
 let cree_grille i j  =
     Array.make_matrix i j Vide
 
+let type_res_to_string (e:resultat) =
+  match e with 
+    |RVide -> "RVide"
+    |RChaine _ -> "RChaine"
+    |REntier _ -> "REntier"
+    |RFlottant _ -> "RFlottant"
+    |Erreur _ -> "Erreur"
+
+
 let res_to_string expr =
     match expr with
     |RVide -> ""
@@ -51,6 +61,7 @@ let res_to_string expr =
     |Erreur e-> match e with
       |Mauvais_indice (i,j) -> "Mauvais indice " ^"("^string_of_int i^","^string_of_int j^")"
       |Cycle_detecte (i,j) -> "Cycle Present"^"("^string_of_int i^","^string_of_int j^")"
+      |Mauvais_argument s -> s
 
 let rec expr_to_string expr =
     match expr with
@@ -135,4 +146,26 @@ let affiche_grille_resultat (grille_res:grille_resultat) =
         fun j -> Format.printf "|%8s|" (res_to_string j)) i;print_newline()) grille_res
 
 let abs (v:expr) =
-  
+  let f (r:resultat) = 
+    match  r with 
+      | REntier e -> REntier (abs e)
+      | RFlottant f -> RFlottant (abs_float f)
+      | _ -> Erreur (Mauvais_argument ("Attendus un entier ou flottant mais argument de type "^(type_res_to_string r))) 
+  in
+  let t = {app1=f; operande=v} in
+  Unaire(t)
+
+let add (a:expr) (b:expr)=
+  let f (r:resultat) (s:resultat)= 
+    match  (r,s) with 
+      | (REntier e, REntier d) -> REntier (e+d)
+      | (RFlottant f, RFlottant e) -> RFlottant (f+.e)
+      | (RFlottant f, REntier e) -> RFlottant (f +. (float_of_int e))
+      | (REntier e, RFlottant f) -> RFlottant (f +. (float_of_int e))
+      | _ -> Erreur (Mauvais_argument ("Attendus un entier ou flottant mais argument de type "^(type_res_to_string r)^" et de type "^(type_res_to_string s))) 
+  in
+  let t = {app2=f; gauche=a; droite=b} in
+  Binaire(t)
+
+(*let somme (case_debut:(int*int)) (case_fin:(int*int)) =
+  *)
