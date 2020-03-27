@@ -306,3 +306,15 @@ let puiss (a:expr) (b:expr)=
   in
   let t = {app2=f; gauche=a; droite=b} in
   Binaire(t)
+
+let modulo (a:expr) (b:expr)=
+  let f (r:resultat) (s:resultat)= 
+    match  (r,s) with 
+      | (REntier e, REntier d) -> REntier (e mod d)
+      | (RFlottant f, RFlottant e) -> RFlottant (mod_float f e)
+      | (RFlottant f, REntier e) -> RFlottant (mod_float f (float_of_int e))
+      | (REntier e, RFlottant f) -> RFlottant (mod_float (float_of_int e) f)
+      | _ -> Erreur (Mauvais_argument ("Attendus un entier ou flottant mais argument de type "^(type_res_to_string r)^" et de type "^(type_res_to_string s))) 
+  in
+  let t = {app2=f; gauche=a; droite=b} in
+  Binaire(t)
