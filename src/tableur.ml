@@ -145,6 +145,11 @@ let affiche_grille_resultat (grille_res:grille_resultat) =
       fun i -> Array.iter (
         fun j -> Format.printf "|%8s|" (res_to_string j)) i;print_newline()) grille_res
 
+
+
+(** Primitives*)
+
+
 let abs (v:expr) =
   let f (r:resultat) = 
     match  r with 
@@ -255,6 +260,36 @@ let sqrt (v:expr) =
     match  r with 
       | REntier  e-> RFlottant (sqrt (float_of_int e))
       | RFlottant d -> RFlottant (sqrt d)
+      | _ -> Erreur (Mauvais_argument ("Attendus un entier ou flottant mais argument de type "^(type_res_to_string r))) 
+  in
+  let t = {app1=f; operande=v} in
+  Unaire(t)
+
+let square (v:expr) =
+  let f (r:resultat) = 
+    match  r with 
+      | REntier e -> REntier (e*e)
+      | RFlottant f -> RFlottant (f*.f)
+      | _ -> Erreur (Mauvais_argument ("Attendus un entier ou flottant mais argument de type "^(type_res_to_string r))) 
+  in
+  let t = {app1=f; operande=v} in
+  Unaire(t)
+
+let incremente (v:expr) =
+  let f (r:resultat) = 
+    match  r with 
+      | REntier e -> REntier (e+1)
+      | RFlottant f -> RFlottant (1.+.f)
+      | _ -> Erreur (Mauvais_argument ("Attendus un entier ou flottant mais argument de type "^(type_res_to_string r))) 
+  in
+  let t = {app1=f; operande=v} in
+  Unaire(t)
+
+let decremente (v:expr) =
+  let f (r:resultat) = 
+    match  r with 
+      | REntier e -> REntier (e-1)
+      | RFlottant f -> RFlottant (1.-.f)
       | _ -> Erreur (Mauvais_argument ("Attendus un entier ou flottant mais argument de type "^(type_res_to_string r))) 
   in
   let t = {app1=f; operande=v} in
