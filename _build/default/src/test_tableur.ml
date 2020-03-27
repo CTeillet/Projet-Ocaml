@@ -76,11 +76,12 @@ let test13 () =
   let grille_res = eval_grille grille in
   assert(grille_res.(0).(0) = Erreur(Mauvais_indice (10,12)))
 
+
 let run_tests () =
   let liste_tests =
     [("création grille", test1); ("affectation grille", test2); ("Avec cycle simple", test3); ("Sans cycle simple", test4); ("Avec cycle plus long", test5);
     ("Sans cycle plus long", test6); ("affichage case", test7); ("affichage entier", test8); ("affichage chaine", test9); ("affichage flottant", test10);
-    ("test eval avec case", test11); ("test eval avec multiple case avant arrivée", test12); ("test eval avec case en dehors de la grille", test13)]
+    ("test eval avec case", test11); ("test eval avec multiple case avant arrivée", test12); ("test eval avec case en dehors de la grille", test13) ]
   in
   List.iteri
     (fun i (nom_test, f_test) ->

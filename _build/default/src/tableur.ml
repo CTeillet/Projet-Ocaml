@@ -9,6 +9,7 @@ type resultat =
 and erreur =
   |Mauvais_indice of (int * int)
   |Cycle_detecte of (int * int)
+  |Mauvais_argument of string
 
 type expr =
   | Vide
@@ -42,6 +43,15 @@ end)
 let cree_grille i j  =
     Array.make_matrix i j Vide
 
+let type_res_to_string (e:resultat) =
+  match e with 
+    |RVide -> "RVide"
+    |RChaine _ -> "RChaine"
+    |REntier _ -> "REntier"
+    |RFlottant _ -> "RFlottant"
+    |Erreur _ -> "Erreur"
+
+
 let res_to_string expr =
     match expr with
     |RVide -> ""
@@ -51,6 +61,7 @@ let res_to_string expr =
     |Erreur e-> match e with
       |Mauvais_indice (i,j) -> "Mauvais indice " ^"("^string_of_int i^","^string_of_int j^")"
       |Cycle_detecte (i,j) -> "Cycle Present"^"("^string_of_int i^","^string_of_int j^")"
+      |Mauvais_argument s -> s
 
 let rec expr_to_string expr =
     match expr with
@@ -134,12 +145,107 @@ let affiche_grille_resultat (grille_res:grille_resultat) =
       fun i -> Array.iter (
         fun j -> Format.printf "|%8s|" (res_to_string j)) i;print_newline()) grille_res
 
-(**let r = cree_grille 10 10;;
-r.(1).(1) <- Entier(1);;
-r.(1).(2) <- Case(2, 1);;
-r.(2).(1) <- Case(1, 4);;
-r.(1).(4) <- Case(5, 5);;
-r.(5).(5) <- Case(6, 5);;
-r.(6).(5) <- Case(1, 2);;
-print_string (string_of_bool (cycle r (Case(1, 2))));;
-affiche_grille r;;**)
+let abs (v:expr) =
+  let f (r:resultat) = 
+    match  r with 
+      | REntier e -> REntier (abs e)
+      | RFlottant f -> RFlottant (abs_float f)
+      | _ -> Erreur (Mauvais_argument ("Attendus un entier ou flottant mais argument de type "^(type_res_to_string r))) 
+  in
+  let t = {app1=f; operande=v} in
+  Unaire(t)
+
+let add (a:expr) (b:expr)=
+  let f (r:resultat) (s:resultat)= 
+    match  (r,s) with 
+      | (REntier e, REntier d) -> REntier (e+d)
+      | (RFlottant f, RFlottant e) -> RFlottant (f+.e)
+      | (RFlottant f, REntier e) -> RFlottant (f +. (float_of_int e))
+      | (REntier e, RFlottant f) -> RFlottant (f +. (float_of_int e))
+      | _ -> Erreur (Mauvais_argument ("Attendus un entier ou flottant mais argument de type "^(type_res_to_string r)^" et de type "^(type_res_to_string s))) 
+  in
+  let t = {app2=f; gauche=a; droite=b} in
+  Binaire(t)
+
+(*let somme (case_debut:(int*int)) (case_fin:(int*int)) =
+  *)
+
+let oppose (v:expr) =
+  let f (r:resultat) = 
+    match  r with 
+      | REntier e -> REntier (-e)
+      | RFlottant f -> RFlottant (-.f)
+      | _ -> Erreur (Mauvais_argument ("Attendus un entier ou flottant mais argument de type "^(type_res_to_string r))) 
+  in
+  let t = {app1=f; operande=v} in
+  Unaire(t)
+
+let inverse (v:expr) =
+  let f (r:resultat) = 
+    match  r with 
+      | REntier e -> REntier (1/e)
+      | RFlottant f -> RFlottant (1./.f)
+      | _ -> Erreur (Mauvais_argument ("Attendus un entier ou flottant mais argument de type "^(type_res_to_string r))) 
+  in
+  let t = {app1=f; operande=v} in
+  Unaire(t)
+
+let minus (a:expr) (b:expr)=
+  let f (r:resultat) (s:resultat)= 
+    match  (r,s) with 
+      | (REntier e, REntier d) -> REntier (e-d)
+      | (RFlottant f, RFlottant e) -> RFlottant (f-.e)
+      | (RFlottant f, REntier e) -> RFlottant (f -. (float_of_int e))
+      | (REntier e, RFlottant f) -> RFlottant (f -. (float_of_int e))
+      | _ -> Erreur (Mauvais_argument ("Attendus un entier ou flottant mais argument de type "^(type_res_to_string r)^" et de type "^(type_res_to_string s))) 
+  in
+  let t = {app2=f; gauche=a; droite=b} in
+  Binaire(t)
+
+let mul (a:expr) (b:expr)=
+  let f (r:resultat) (s:resultat)= 
+    match  (r,s) with 
+      | (REntier e, REntier d) -> REntier (e*d)
+      | (RFlottant f, RFlottant e) -> RFlottant (f*.e)
+      | (RFlottant f, REntier e) -> RFlottant (f *. (float_of_int e))
+      | (REntier e, RFlottant f) -> RFlottant (f *. (float_of_int e))
+      | _ -> Erreur (Mauvais_argument ("Attendus un entier ou flottant mais argument de type "^(type_res_to_string r)^" et de type "^(type_res_to_string s))) 
+  in
+  let t = {app2=f; gauche=a; droite=b} in
+  Binaire(t)
+
+let div (a:expr) (b:expr)=
+  let f (r:resultat) (s:resultat)= 
+    match  (r,s) with 
+      | (REntier e, REntier d) -> REntier (e/d)
+      | (RFlottant f, RFlottant e) -> RFlottant (f/.e)
+      | (RFlottant f, REntier e) -> RFlottant (f /. (float_of_int e))
+      | (REntier e, RFlottant f) -> RFlottant (f /. (float_of_int e))
+      | _ -> Erreur (Mauvais_argument ("Attendus un entier ou flottant mais argument de type "^(type_res_to_string r)^" et de type "^(type_res_to_string s))) 
+  in
+  let t = {app2=f; gauche=a; droite=b} in
+  Binaire(t)
+
+let max (a:expr) (b:expr)=
+  let f (r:resultat) (s:resultat)= 
+    match  (r,s) with 
+      | (REntier e, REntier d) -> REntier (max e d)
+      | (RFlottant f, RFlottant e) -> RFlottant (max f e)
+      | (RFlottant f, REntier e) -> RFlottant (max f (float_of_int e))
+      | (REntier e, RFlottant f) -> RFlottant (max f (float_of_int e))
+      | _ -> Erreur (Mauvais_argument ("Attendus un entier ou flottant mais argument de type "^(type_res_to_string r)^" et de type "^(type_res_to_string s))) 
+  in
+  let t = {app2=f; gauche=a; droite=b} in
+  Binaire(t)
+
+let min (a:expr) (b:expr)=
+  let f (r:resultat) (s:resultat)= 
+    match  (r,s) with 
+      | (REntier e, REntier d) -> REntier (min e d)
+      | (RFlottant f, RFlottant e) -> RFlottant (min f e)
+      | (RFlottant f, REntier e) -> RFlottant (min f (float_of_int e))
+      | (REntier e, RFlottant f) -> RFlottant (min f (float_of_int e))
+      | _ -> Erreur (Mauvais_argument ("Attendus un entier ou flottant mais argument de type "^(type_res_to_string r)^" et de type "^(type_res_to_string s))) 
+  in
+  let t = {app2=f; gauche=a; droite=b} in
+  Binaire(t)
