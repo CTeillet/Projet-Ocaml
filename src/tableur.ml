@@ -189,3 +189,27 @@ let inverse (v:expr) =
   in
   let t = {app1=f; operande=v} in
   Unaire(t)
+
+let minus (a:expr) (b:expr)=
+  let f (r:resultat) (s:resultat)= 
+    match  (r,s) with 
+      | (REntier e, REntier d) -> REntier (e-d)
+      | (RFlottant f, RFlottant e) -> RFlottant (f-.e)
+      | (RFlottant f, REntier e) -> RFlottant (f -. (float_of_int e))
+      | (REntier e, RFlottant f) -> RFlottant (f -. (float_of_int e))
+      | _ -> Erreur (Mauvais_argument ("Attendus un entier ou flottant mais argument de type "^(type_res_to_string r)^" et de type "^(type_res_to_string s))) 
+  in
+  let t = {app2=f; gauche=a; droite=b} in
+  Binaire(t)
+
+let mult (a:expr) (b:expr)=
+  let f (r:resultat) (s:resultat)= 
+    match  (r,s) with 
+      | (REntier e, REntier d) -> REntier (e*d)
+      | (RFlottant f, RFlottant e) -> RFlottant (f*.e)
+      | (RFlottant f, REntier e) -> RFlottant (f *. (float_of_int e))
+      | (REntier e, RFlottant f) -> RFlottant (f *. (float_of_int e))
+      | _ -> Erreur (Mauvais_argument ("Attendus un entier ou flottant mais argument de type "^(type_res_to_string r)^" et de type "^(type_res_to_string s))) 
+  in
+  let t = {app2=f; gauche=a; droite=b} in
+  Binaire(t)
