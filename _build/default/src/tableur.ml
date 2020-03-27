@@ -249,3 +249,13 @@ let min (a:expr) (b:expr)=
   in
   let t = {app2=f; gauche=a; droite=b} in
   Binaire(t)
+
+let sqrt (v:expr) =
+  let f (r:resultat) = 
+    match  r with 
+      | REntier e -> REntier (sqrt (float_of_int e))
+      | RFlottant f -> RFlottant (sqrt f)
+      | _ -> Erreur (Mauvais_argument ("Attendus un entier ou flottant mais argument de type "^(type_res_to_string r))) 
+  in
+  let t = {app1=f; operande=v} in
+  Unaire(t)
