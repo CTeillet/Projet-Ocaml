@@ -103,12 +103,12 @@ let cycle (gr:grille) (ex:expr) =
 let rec eval_expr (grille : grille) (expr : expr) =
     match expr with
     |Case (i, j) ->  if i >= Array.length grille || j>=Array.length grille.(0) then
+                            Erreur (Mauvais_indice (i,j))
+                          else
                             if not (cycle grille expr) then
                               eval_expr grille grille.(i).(j)
                             else
                               Erreur (Cycle_detecte(i,j))
-                          else
-                            Erreur (Mauvais_indice (i,j))
     |Entier i -> REntier i
     |Vide -> RVide
     |Flottant i -> RFlottant i

@@ -103,12 +103,12 @@ let cycle (gr:grille) (ex:expr) =
 let rec eval_expr (grille : grille) (expr : expr) =
     match expr with
     |Case (i, j) ->  if i >= Array.length grille || j>=Array.length grille.(0) then
+                            Erreur (Mauvais_indice (i,j))
+                          else
                             if not (cycle grille expr) then
                               eval_expr grille grille.(i).(j)
                             else
                               Erreur (Cycle_detecte(i,j))
-                          else
-                            Erreur (Mauvais_indice (i,j))
     |Entier i -> REntier i
     |Vide -> RVide
     |Flottant i -> RFlottant i
@@ -134,12 +134,5 @@ let affiche_grille_resultat (grille_res:grille_resultat) =
       fun i -> Array.iter (
         fun j -> Format.printf "|%8s|" (res_to_string j)) i;print_newline()) grille_res
 
-(**let r = cree_grille 10 10;;
-r.(1).(1) <- Entier(1);;
-r.(1).(2) <- Case(2, 1);;
-r.(2).(1) <- Case(1, 4);;
-r.(1).(4) <- Case(5, 5);;
-r.(5).(5) <- Case(6, 5);;
-r.(6).(5) <- Case(1, 2);;
-print_string (string_of_bool (cycle r (Case(1, 2))));;
-affiche_grille r;;**)
+let abs (v:expr) =
+  
