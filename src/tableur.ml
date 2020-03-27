@@ -201,7 +201,7 @@ let minus (a:expr) (b:expr)=
       | (REntier e, REntier d) -> REntier (e-d)
       | (RFlottant f, RFlottant e) -> RFlottant (f-.e)
       | (RFlottant f, REntier e) -> RFlottant (f -. (float_of_int e))
-      | (REntier e, RFlottant f) -> RFlottant (f -. (float_of_int e))
+      | (REntier e, RFlottant f) -> RFlottant ((float_of_int e) -. f)
       | _ -> Erreur (Mauvais_argument ("Attendus un entier ou flottant mais argument de type "^(type_res_to_string r)^" et de type "^(type_res_to_string s))) 
   in
   let t = {app2=f; gauche=a; droite=b} in
@@ -225,7 +225,7 @@ let div (a:expr) (b:expr)=
       | (REntier e, REntier d) -> REntier (e/d)
       | (RFlottant f, RFlottant e) -> RFlottant (f/.e)
       | (RFlottant f, REntier e) -> RFlottant (f /. (float_of_int e))
-      | (REntier e, RFlottant f) -> RFlottant (f /. (float_of_int e))
+      | (REntier e, RFlottant f) -> RFlottant ((float_of_int e) /. f)
       | _ -> Erreur (Mauvais_argument ("Attendus un entier ou flottant mais argument de type "^(type_res_to_string r)^" et de type "^(type_res_to_string s))) 
   in
   let t = {app2=f; gauche=a; droite=b} in
@@ -237,7 +237,7 @@ let max (a:expr) (b:expr)=
       | (REntier e, REntier d) -> REntier (max e d)
       | (RFlottant f, RFlottant e) -> RFlottant (max f e)
       | (RFlottant f, REntier e) -> RFlottant (max f (float_of_int e))
-      | (REntier e, RFlottant f) -> RFlottant (max f (float_of_int e))
+      | (REntier e, RFlottant f) -> RFlottant (max (float_of_int e) f)
       | _ -> Erreur (Mauvais_argument ("Attendus un entier ou flottant mais argument de type "^(type_res_to_string r)^" et de type "^(type_res_to_string s))) 
   in
   let t = {app2=f; gauche=a; droite=b} in
@@ -249,7 +249,7 @@ let min (a:expr) (b:expr)=
       | (REntier e, REntier d) -> REntier (min e d)
       | (RFlottant f, RFlottant e) -> RFlottant (min f e)
       | (RFlottant f, REntier e) -> RFlottant (min f (float_of_int e))
-      | (REntier e, RFlottant f) -> RFlottant (min f (float_of_int e))
+      | (REntier e, RFlottant f) -> RFlottant (min (float_of_int e) f)
       | _ -> Erreur (Mauvais_argument ("Attendus un entier ou flottant mais argument de type "^(type_res_to_string r)^" et de type "^(type_res_to_string s))) 
   in
   let t = {app2=f; gauche=a; droite=b} in
@@ -294,3 +294,15 @@ let decremente (v:expr) =
   in
   let t = {app1=f; operande=v} in
   Unaire(t)
+
+let puiss (a:expr) (b:expr)=
+  let f (r:resultat) (s:resultat)= 
+    match  (r,s) with 
+      | (REntier e, REntier d) -> RFlottant ((float_of_int e)**(float_of_int d))
+      | (RFlottant f, RFlottant e) -> RFlottant (f**e)
+      | (RFlottant f, REntier e) -> RFlottant (f ** (float_of_int e))
+      | (REntier e, RFlottant f) -> RFlottant ((float_of_int e)**f)
+      | _ -> Erreur (Mauvais_argument ("Attendus un entier ou flottant mais argument de type "^(type_res_to_string r)^" et de type "^(type_res_to_string s))) 
+  in
+  let t = {app2=f; gauche=a; droite=b} in
+  Binaire(t)
