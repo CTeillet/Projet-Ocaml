@@ -80,7 +80,7 @@ let affiche_grille (gr:grille) =
       fun i -> Array.iter (
         fun j -> Format.printf "|%8s|" (expr_to_string j)) i;print_newline()) gr
 
-let cycle (gr:grille) (ex:expr) =
+let rec cycle (gr:grille) (ex:expr) =
     let ensemble_case = ref CaseSet.empty in
     let rec testCycle e =
       match e with
@@ -92,14 +92,14 @@ let cycle (gr:grille) (ex:expr) =
                       testCycle gr.(i).(j))
       |Unaire u -> testCycle u.operande
       |Binaire b -> testCycle b.gauche || testCycle b.droite
-      |Reduction r -> (try 
+      |Reduction r ->(try 
                         for i=(fst r.case_debut) to (fst r.case_fin) do 
-                          for j=(snd r.case_fin) to (snd r.case_fin) do 
+                          for j=(snd r.case_debut) to (snd r.case_fin) do 
                               if CaseSet.mem (i,j) !ensemble_case then
                                 raise Cycle_detecte
                               else 
                                 ensemble_case := CaseSet.add (i,j) !ensemble_case;
-                                let t = testCycle gr.(i).(j) in
+                                let t = cycle gr gr.(i).(j) in
                                 if t then
                                   raise Cycle_detecte 
                           done
@@ -130,7 +130,7 @@ let rec eval_expr (grille : grille) (expr : expr) =
     |Reduction r -> let a = ref RVide in
                     (try 
                     for i=(fst r.case_debut) to (fst r.case_fin) do 
-                      for j=(snd r.case_fin) to (snd r.case_fin) do 
+                      for j=(snd r.case_debut) to (snd r.case_fin) do 
                         if !a = RVide then 
                           a := r.app (eval_expr grille grille.(i).(j)) r.init
                         else

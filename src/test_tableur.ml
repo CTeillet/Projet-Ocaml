@@ -109,11 +109,22 @@ let test17 () =
 
 let test18 () =
   let grille = cree_grille 10 10 in
-  grille.(0).(0) <- Case (1,8);
-  grille.(5).(1) <- Case (1,1);
   let f (_:resultat) (_:resultat) = RVide in
-  grille.(1).(1) <- Binaire({app2=f; gauche = Case(5,5); droite=Case(0,0)});
-  assert(cycle grille (Case(1,1)) = true)
+  grille.(0).(1) <- Case(1,1);
+  grille.(1).(1) <- Case(0,1);
+  grille.(0).(3) <- Reduction({app=f; case_debut = (0,0); case_fin=(2,2); init=REntier 0});
+  assert(cycle grille (Case(0,3)) = true)
+
+let test19 () =
+  let grille = cree_grille 10 10 in
+  let f (_:resultat) (_:resultat) = RVide in
+  grille.(0).(1) <- Entier 1;
+  grille.(1).(1) <- Chaine "test";
+  grille.(2).(0) <- Flottant 2.;
+  grille.(2).(1) <- Case(0,1);
+  grille.(2).(2) <- Case(2,0);
+  grille.(0).(3) <- Reduction({app=f; case_debut = (0,0); case_fin=(2,2); init=REntier 0});
+  assert(cycle grille (Case(0,3)) = false)
 
 let run_tests () =
   let liste_tests =
@@ -121,7 +132,7 @@ let run_tests () =
     ("Sans cycle plus long", test6); ("affichage case", test7); ("affichage entier", test8); ("affichage chaine", test9); ("affichage flottant", test10);
     ("test eval avec case", test11); ("test eval avec multiple case avant arrivée", test12); ("test eval avec case en dehors de la grille", test13);
     ("test cycle vrai avec unaire", test14); ("test cycle faux avec unaire", test15) ; ("test cycle vrai avec binaire", test16); ("test cycle faux avec binaire", test17);
-    ("test cycle vrai reduction", test18)]
+    ("test cycle vrai reduction", test18);  ("test cycle faux reduction", test19)]
   in
   List.iteri
     (fun i (nom_test, f_test) ->
