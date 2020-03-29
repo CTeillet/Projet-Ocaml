@@ -76,12 +76,52 @@ let test13 () =
   let grille_res = eval_grille grille in
   assert(grille_res.(0).(0) = Erreur(Mauvais_indice (10,12)))
 
+let test14 () =
+  let grille = cree_grille 10 10 in
+  grille.(0).(0) <- Case (1,1);
+  let f (_:resultat) = RVide in
+  grille.(1).(1) <- Unaire({app1=f; operande = Case(0,0)});
+  assert(cycle grille (Case(0,0)) = true)
+
+let test15 () =
+  let grille = cree_grille 10 10 in
+  grille.(0).(0) <- Case (1,1);
+  grille.(5).(5) <- Entier 5;
+  let f (_:resultat) = RVide in
+  grille.(1).(1) <- Unaire({app1=f; operande = Case(5,5)});
+  assert(cycle grille (Case(0,0)) = false)
+
+let test16 () =
+  let grille = cree_grille 10 10 in
+  grille.(0).(0) <- Case (1,1);
+  grille.(5).(5) <- Case (1,1);
+  let f (_:resultat) (_:resultat) = RVide in
+  grille.(1).(1) <- Binaire({app2=f; gauche = Case(5,5); droite=Case(0,0)});
+  assert(cycle grille (Case(1,1)) = true)
+
+let test17 () =
+  let grille = cree_grille 10 10 in
+  grille.(0).(0) <- Case (1,8);
+  grille.(5).(1) <- Case (1,1);
+  let f (_:resultat) (_:resultat) = RVide in
+  grille.(1).(1) <- Binaire({app2=f; gauche = Case(5,5); droite=Case(0,0)});
+  assert(cycle grille (Case(1,1)) = false)
+
+let test18 () =
+  let grille = cree_grille 10 10 in
+  grille.(0).(0) <- Case (1,8);
+  grille.(5).(1) <- Case (1,1);
+  let f (_:resultat) (_:resultat) = RVide in
+  grille.(1).(1) <- Binaire({app2=f; gauche = Case(5,5); droite=Case(0,0)});
+  assert(cycle grille (Case(1,1)) = true)
 
 let run_tests () =
   let liste_tests =
     [("création grille", test1); ("affectation grille", test2); ("Avec cycle simple", test3); ("Sans cycle simple", test4); ("Avec cycle plus long", test5);
     ("Sans cycle plus long", test6); ("affichage case", test7); ("affichage entier", test8); ("affichage chaine", test9); ("affichage flottant", test10);
-    ("test eval avec case", test11); ("test eval avec multiple case avant arrivée", test12); ("test eval avec case en dehors de la grille", test13) ]
+    ("test eval avec case", test11); ("test eval avec multiple case avant arrivée", test12); ("test eval avec case en dehors de la grille", test13);
+    ("test cycle vrai avec unaire", test14); ("test cycle faux avec unaire", test15) ; ("test cycle vrai avec binaire", test16); ("test cycle faux avec binaire", test17);
+    ("test cycle vrai reduction", test18)]
   in
   List.iteri
     (fun i (nom_test, f_test) ->
