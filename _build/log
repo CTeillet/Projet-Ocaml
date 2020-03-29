@@ -1,10 +1,10 @@
 # dune exec src/test_tableur.exe -f
 # OCAMLPARAM: unset
 # Workspace root: /home/teillet/Projet-Ocaml
-$ /usr/bin/nproc > /tmp/dune2a3df1.output 2> /dev/null
+$ /usr/bin/nproc > /tmp/dune20dd87.output 2> /dev/null
 # Auto-detected concurrency: 8
 # disable binary cache
-$ /usr/bin/ocamlc.opt -config > /tmp/dune552648.output
+$ /usr/bin/ocamlc.opt -config > /tmp/dune75043c.output
 # Dune context:
 #  { name = "default"
 #  ; kind = "default"
@@ -131,7 +131,10 @@ $ /usr/bin/ocamlc.opt -config > /tmp/dune552648.output
 #      }
 #  }
 # Workspace root: /home/teillet/Projet-Ocaml
-$ (cd _build/default && /usr/bin/ocamldep.opt -modules -impl src/test_tableur.ml) > _build/default/src/.test_tableur.eobjs/test_tableur.ml.d
+$ (cd _build/default && /usr/bin/ocamldep.opt -modules -impl src/tableur.ml) > _build/default/src/.tableur.objs/tableur.ml.d
+$ (cd _build/default && /usr/bin/ocamlc.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -bin-annot -I src/.tableur.objs/byte -no-alias-deps -opaque -o src/.tableur.objs/byte/tableur.cmo -c -impl src/tableur.ml)
 $ (cd _build/default && /usr/bin/ocamlc.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -bin-annot -I src/.test_tableur.eobjs/byte -I src/.tableur.objs/byte -I src/.tableur.objs/native -no-alias-deps -opaque -o src/.test_tableur.eobjs/byte/dune__exe__Test_tableur.cmo -c -impl src/test_tableur.ml)
+$ (cd _build/default && /usr/bin/ocamlopt.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -I src/.tableur.objs/byte -I src/.tableur.objs/native -intf-suffix .ml -no-alias-deps -opaque -o src/.tableur.objs/native/tableur.cmx -c -impl src/tableur.ml)
 $ (cd _build/default && /usr/bin/ocamlopt.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -I src/.test_tableur.eobjs/byte -I src/.test_tableur.eobjs/native -I src/.tableur.objs/byte -I src/.tableur.objs/native -intf-suffix .ml -no-alias-deps -opaque -o src/.test_tableur.eobjs/native/dune__exe__Test_tableur.cmx -c -impl src/test_tableur.ml)
+$ (cd _build/default && /usr/bin/ocamlopt.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -a -o src/tableur.cmxa src/.tableur.objs/native/tableur.cmx)
 $ (cd _build/default && /usr/bin/ocamlopt.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -o src/test_tableur.exe src/tableur.cmxa src/.test_tableur.eobjs/native/dune__exe__Test_tableur.cmx)

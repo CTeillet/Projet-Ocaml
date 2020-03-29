@@ -179,7 +179,7 @@ let abs (v:expr) =
   let t = {app1=f; operande=v} in
   Unaire(t)
 
- let somme (r:resultat) (s:resultat)= 
+ let somme_int (r:resultat) (s:resultat)= 
     match  (r,s) with 
       | (REntier e, REntier d) -> REntier (e+d)
       | (RFlottant f, RFlottant e) -> RFlottant (f+.e)
@@ -188,11 +188,11 @@ let abs (v:expr) =
       | _ -> Erreur (Mauvais_argument ("Attendus un entier ou flottant mais argument de type "^(type_res_to_string r)^" et de type "^(type_res_to_string s))) 
 
 let add (a:expr) (b:expr)=
-  let t = {app2=somme; gauche=a; droite=b} in
+  let t = {app2=somme_int; gauche=a; droite=b} in
   Binaire(t)
 
 let somme (case_debut:(int*int)) (case_fin:(int*int)) = 
-    let t = {app= somme; init=(REntier 0); case_debut=case_debut; case_fin=case_fin} in
+    let t = {app= somme_int; init=(REntier 0); case_debut=case_debut; case_fin=case_fin} in
     Reduction (t)
 
 let oppose (v:expr) =
