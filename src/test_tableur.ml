@@ -176,6 +176,19 @@ let test26 () =
   grille.(0).(0) <- oppose (Case(0,1));
   assert(eval_expr grille (Case(0,0)) = REntier 2)
 
+let test27 () =
+  let grille = cree_grille 10 10 in
+  grille.(0).(1) <- Entier (10);
+  grille.(0).(0) <- inverse (Case(0,1));
+  assert(eval_expr grille (Case(0,0)) = REntier 0)
+
+let test28 () =
+  let grille = cree_grille 10 10 in
+  grille.(0).(1) <- Flottant (10.);
+  grille.(0).(0) <- inverse (Case(0,1));
+  assert(eval_expr grille (Case(0,0)) = RFlottant 0.1)
+
+
 let run_tests () =
   let liste_tests =
     [("création grille", test1); ("affectation grille", test2); ("Avec cycle simple", test3); ("Sans cycle simple", test4); ("Avec cycle plus long", test5);
@@ -184,7 +197,7 @@ let run_tests () =
     ("test cycle vrai avec unaire", test14); ("test cycle faux avec unaire", test15) ; ("test cycle vrai avec binaire", test16); ("test cycle faux avec binaire", test17);
     ("test cycle vrai reduction", test18);  ("test cycle faux reduction", test19);  ("test eval avec unaire absolue", test20);  ("test eval avec valeur negative unaire absolue", test21);
     ("test eval avec somme", test22);  ("test eval avec somme int + float", test23); ("test eval avec reduction somme", test24); ("test eval avec reduction somme melange int float", test25);
-    ("test eval avec oppose", test26);]
+    ("test eval avec oppose", test26); ("test eval avec inverse entier", test27); ("test eval avec inverse flottant", test28);]
   in
   List.iteri
     (fun i (nom_test, f_test) ->
