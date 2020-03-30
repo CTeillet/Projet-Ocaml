@@ -113,8 +113,7 @@ let rec cycle (gr:grille) (ex:expr) =
     testCycle ex
 
 let rec eval_expr (grille : grille) (expr : expr) =
-  let memo = Hashtbl.create ((Array.length grille) * Array.length grille.(0)) in
-  
+  let memo = Hashtbl.create ((Array.length grille) * Array.length grille.(0)) in 
     match expr with
     |Case (i, j) ->  if i >= Array.length grille || j>=Array.length grille.(0) then
                             Erreur (Mauvais_indice (i,j))
@@ -353,6 +352,18 @@ let modulo (a:expr) (b:expr)=
       | (RFlottant f, RFlottant e) -> RFlottant (mod_float f e)
       | (RFlottant f, REntier e) -> RFlottant (mod_float f (float_of_int e))
       | (REntier e, RFlottant f) -> RFlottant (mod_float (float_of_int e) f)
+      | _ -> Erreur (Mauvais_argument ("Attendus un entier ou flottant mais argument de type "^(type_res_to_string r)^" et de type "^(type_res_to_string s))) 
+  in
+  let t = {app2=f; gauche=a; droite=b} in
+  Binaire(t)
+
+let moyenne (a:expr) (b:expr) = 
+  let f (r:resultat) (s:resultat)= 
+    match  (r,s) with 
+      | (REntier e, REntier d) -> REntier ((e+d)/2)
+      | (RFlottant f, RFlottant e) -> RFlottant((f+.e)/.2.)
+      | (RFlottant f, REntier e) -> RFlottant((f+.(float_of_int e))/.2.)
+      | (REntier e, RFlottant f) -> RFlottant ((f+.(float_of_int e))/.2.)
       | _ -> Erreur (Mauvais_argument ("Attendus un entier ou flottant mais argument de type "^(type_res_to_string r)^" et de type "^(type_res_to_string s))) 
   in
   let t = {app2=f; gauche=a; droite=b} in
