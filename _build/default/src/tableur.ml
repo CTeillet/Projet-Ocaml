@@ -113,14 +113,21 @@ let rec cycle (gr:grille) (ex:expr) =
     testCycle ex
 
 let rec eval_expr (grille : grille) (expr : expr) =
+  let memo = Hashtbl.create ((Array.length grille) * Array.length grille.(0)) in
+  
     match expr with
     |Case (i, j) ->  if i >= Array.length grille || j>=Array.length grille.(0) then
                             Erreur (Mauvais_indice (i,j))
                           else
-                            if not (cycle grille expr) then
-                              eval_expr grille grille.(i).(j)
-                            else
-                              Erreur (Cycle_detecte(i,j))
+                            if Hashtbl.mem memo (i,j) then 
+                              Hashtbl.find memo (i,j)
+                            else 
+                              if not (cycle grille expr) then
+                                let t = eval_expr grille grille.(i).(j) in 
+                                Hashtbl.add memo (i,j) t;
+                                t
+                              else
+                                Erreur (Cycle_detecte(i,j))
     |Entier i -> REntier i
     |Vide -> RVide
     |Flottant i -> RFlottant i
@@ -155,7 +162,7 @@ let eval_grille (grille : grille) =
     for i=0 to Array.length res -1 do
       for j=0 to Array.length res.(0) -1 do
         res.(i).(j) <- eval_expr grille grille.(i).(j)
-      done;
+      done
     done;
     res
 
