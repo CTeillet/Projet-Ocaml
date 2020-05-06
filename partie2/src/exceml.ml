@@ -56,7 +56,13 @@ let update i j grid infos_grid = assert false (* TODO *)
 
 let add_cell_events i j grid infos_grid = assert false (* TODO *)
 
-let build_cell cells = mk_cell () (* TODO Question 1 *)
+let build_cell cells = (* mk_cell () TODO Question 1 *)
+  let c = mk_cell () in
+  Dom.appendChild c.container c.inp;
+  Dom.appendChild c.container c.txt;
+  Dom.Class.add c.container "cell-container";
+  Dom.appendChild cells c.container;
+  c
 
 let load_grids height width =
   let cells = Dom.get_element_by_id "cells" in
