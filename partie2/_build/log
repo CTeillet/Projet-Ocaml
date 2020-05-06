@@ -1,0 +1,128 @@
+# dune build src/exceml.bc.js --profile release
+# OCAMLPARAM: unset
+# Workspace root: /home/teillet/Projet-Ocaml/partie2
+$ /usr/bin/nproc > /tmp/dune95b7b3.output 2> /dev/null
+# Auto-detected concurrency: 8
+# disable binary cache
+$ /home/teillet/.opam/4.07.1/bin/ocamlc.opt -config > /tmp/dune1801c9.output
+# Dune context:
+#  { name = "default"
+#  ; kind = "default"
+#  ; profile = Release
+#  ; merlin = true
+#  ; for_host = None
+#  ; fdo_target_exe = None
+#  ; build_dir = "default"
+#  ; toplevel_path = Some External "/home/teillet/.opam/4.07.1/lib/toplevel"
+#  ; ocaml_bin = External "/home/teillet/.opam/4.07.1/bin"
+#  ; ocaml = Ok External "/home/teillet/.opam/4.07.1/bin/ocaml"
+#  ; ocamlc = External "/home/teillet/.opam/4.07.1/bin/ocamlc.opt"
+#  ; ocamlopt = Ok External "/home/teillet/.opam/4.07.1/bin/ocamlopt.opt"
+#  ; ocamldep = Ok External "/home/teillet/.opam/4.07.1/bin/ocamldep.opt"
+#  ; ocamlmklib = Ok External "/home/teillet/.opam/4.07.1/bin/ocamlmklib.opt"
+#  ; env =
+#      map
+#        { "INSIDE_DUNE" : "/home/teillet/Projet-Ocaml/partie2/_build/default"
+#        ; "OCAMLFIND_IGNORE_DUPS_IN" :
+#            "/home/teillet/Projet-Ocaml/partie2/_build/install/default/lib"
+#        ; "OCAMLPATH" :
+#            "/home/teillet/Projet-Ocaml/partie2/_build/install/default/lib"
+#        ; "OCAMLTOP_INCLUDE_PATH" :
+#            "/home/teillet/Projet-Ocaml/partie2/_build/install/default/lib/toplevel"
+#        ; "OCAML_COLOR" : "always"
+#        ; "OPAMCOLOR" : "always"
+#        }
+#  ; findlib_path = [ External "/home/teillet/.opam/4.07.1/lib" ]
+#  ; arch_sixtyfour = true
+#  ; natdynlink_supported = true
+#  ; supports_shared_libraries = true
+#  ; ocaml_config =
+#      { version = "4.07.1"
+#      ; standard_library_default = "/home/teillet/.opam/4.07.1/lib/ocaml"
+#      ; standard_library = "/home/teillet/.opam/4.07.1/lib/ocaml"
+#      ; standard_runtime = "/home/teillet/.opam/4.07.1/bin/ocamlrun"
+#      ; ccomp_type = "cc"
+#      ; c_compiler = "gcc"
+#      ; ocamlc_cflags = [ "-O2"; "-fno-strict-aliasing"; "-fwrapv"; "-fPIC" ]
+#      ; ocamlopt_cflags = [ "-O2"; "-fno-strict-aliasing"; "-fwrapv" ]
+#      ; bytecomp_c_compiler =
+#          [ "gcc"
+#          ; "-O2"
+#          ; "-fno-strict-aliasing"
+#          ; "-fwrapv"
+#          ; "-fPIC"
+#          ; "-D_FILE_OFFSET_BITS=64"
+#          ; "-D_REENTRANT"
+#          ]
+#      ; bytecomp_c_libraries = [ "-lm"; "-ldl"; "-lpthread" ]
+#      ; native_c_compiler =
+#          [ "gcc"
+#          ; "-O2"
+#          ; "-fno-strict-aliasing"
+#          ; "-fwrapv"
+#          ; "-D_FILE_OFFSET_BITS=64"
+#          ; "-D_REENTRANT"
+#          ]
+#      ; native_c_libraries = [ "-lm"; "-ldl" ]
+#      ; cc_profile = [ "-pg" ]
+#      ; architecture = "amd64"
+#      ; model = "default"
+#      ; int_size = 63
+#      ; word_size = 64
+#      ; system = "linux"
+#      ; asm = [ "as" ]
+#      ; asm_cfi_supported = true
+#      ; with_frame_pointers = false
+#      ; ext_exe = ""
+#      ; ext_obj = ".o"
+#      ; ext_asm = ".s"
+#      ; ext_lib = ".a"
+#      ; ext_dll = ".so"
+#      ; os_type = "Unix"
+#      ; default_executable_name = "a.out"
+#      ; systhread_supported = true
+#      ; host = "x86_64-unknown-linux-gnu"
+#      ; target = "x86_64-unknown-linux-gnu"
+#      ; profiling = true
+#      ; flambda = false
+#      ; spacetime = false
+#      ; safe_string = false
+#      ; exec_magic_number = "Caml1999X023"
+#      ; cmi_magic_number = "Caml1999I024"
+#      ; cmo_magic_number = "Caml1999O023"
+#      ; cma_magic_number = "Caml1999A023"
+#      ; cmx_magic_number = "Caml1999Y023"
+#      ; cmxa_magic_number = "Caml1999Z023"
+#      ; ast_impl_magic_number = "Caml1999M023"
+#      ; ast_intf_magic_number = "Caml1999N023"
+#      ; cmxs_magic_number = "Caml1999D023"
+#      ; cmt_magic_number = "Caml1999T024"
+#      ; natdynlink_supported = true
+#      ; supports_shared_libraries = true
+#      ; windows_unicode = false
+#      }
+#  }
+$ (cd _build/default && /home/teillet/.opam/4.07.1/bin/ocamldep.opt -modules -impl src/tableur.ml) > _build/default/src/.tableur.objs/tableur.ml.d
+$ (cd _build/default && /home/teillet/.opam/4.07.1/bin/ocamlc.opt -w -40 -w -49 -nopervasives -nostdlib -g -bin-annot -I src/.parser.objs/byte -no-alias-deps -o src/.parser.objs/byte/parser.cmo -c -impl src/parser.ml-gen)
+$ (cd _build/default && /home/teillet/.opam/4.07.1/bin/ocamlc.opt -w -40 -w -49 -nopervasives -nostdlib -g -bin-annot -I src/.parser_comb.objs/byte -no-alias-deps -o src/.parser_comb.objs/byte/parser_comb.cmo -c -impl src/parser_comb.ml-gen)
+$ (cd _build/default && /home/teillet/.opam/4.07.1/bin/ocamldep.opt -modules -impl src/parser.ml) > _build/default/src/.parser_comb.objs/parser.ml.d
+$ (cd _build/default && /home/teillet/.opam/4.07.1/bin/ocamldep.opt -modules -impl src/exceml.ml) > _build/default/src/.exceml.eobjs/exceml.ml.d
+$ (cd _build/default && /bin/sh -c 'camlp4o src/ast.ml') > _build/default/src/ast.pp.ml
+$ (cd _build/default && /home/teillet/.opam/4.07.1/bin/ocamldep.opt -modules -impl src/ast.pp.ml) > _build/default/src/.parser.objs/ast.pp.ml.d
+$ (cd _build/default && /home/teillet/.opam/4.07.1/bin/ocamlc.opt -w -40 -g -bin-annot -I src/.tableur.objs/byte -no-alias-deps -o src/.tableur.objs/byte/tableur.cmo -c -impl src/tableur.ml)
+$ (cd _build/default && /home/teillet/.opam/4.07.1/bin/ocamlc.opt -w -40 -g -a -o src/tableur.cma src/.tableur.objs/byte/tableur.cmo)
+$ (cd _build/default && /home/teillet/.opam/4.07.1/bin/ocamlc.opt -w -40 -g -bin-annot -I src/.parser.objs/byte -I src/.tableur.objs/byte -I src/.tableur.objs/native -no-alias-deps -open Parser -o src/.parser.objs/byte/parser__Ast.cmo -c -impl src/ast.pp.ml)
+$ (cd _build/default && /home/teillet/.opam/4.07.1/bin/ocamlc.opt -w -40 -g -bin-annot -I src/.parser_comb.objs/byte -I /home/teillet/.opam/4.07.1/lib/angstrom -I /home/teillet/.opam/4.07.1/lib/bigarray-compat -I /home/teillet/.opam/4.07.1/lib/bigstringaf -I src/.tableur.objs/byte -I src/.tableur.objs/native -no-alias-deps -open Parser_comb -o src/.parser_comb.objs/byte/parser_comb__Parser.cmo -c -impl src/parser.ml)
+$ (cd _build/default && /home/teillet/.opam/4.07.1/bin/ocamlc.opt -w -40 -g -a -o src/parser.cma src/.parser.objs/byte/parser.cmo src/.parser.objs/byte/parser__Ast.cmo)
+$ (cd _build/default && /home/teillet/.opam/4.07.1/bin/ocamlc.opt -w -40 -g -a -o src/parser_comb.cma src/.parser_comb.objs/byte/parser_comb.cmo src/.parser_comb.objs/byte/parser_comb__Parser.cmo)
+$ (cd _build/default && /home/teillet/.opam/4.07.1/bin/ocamlopt.opt -o .ppx/7b799aed44581cc79b02033532c5f775/ppx.exe -w -24 -I /home/teillet/.opam/4.07.1/lib/js_of_ocaml-ppx -I /home/teillet/.opam/4.07.1/lib/js_of_ocaml-ppx/as-lib -I /home/teillet/.opam/4.07.1/lib/ocaml-migrate-parsetree -I /home/teillet/.opam/4.07.1/lib/ocaml/compiler-libs -I /home/teillet/.opam/4.07.1/lib/ppx_derivers -I /home/teillet/.opam/4.07.1/lib/result /home/teillet/.opam/4.07.1/lib/ocaml/compiler-libs/ocamlcommon.cmxa /home/teillet/.opam/4.07.1/lib/result/result.cmxa /home/teillet/.opam/4.07.1/lib/ppx_derivers/ppx_derivers.cmxa /home/teillet/.opam/4.07.1/lib/ocaml-migrate-parsetree/migrate_parsetree.cmxa /home/teillet/.opam/4.07.1/lib/js_of_ocaml-ppx/as-lib/ppx_js.cmxa /home/teillet/.opam/4.07.1/lib/js_of_ocaml-ppx/ppx_js_rewriter.cmxa .ppx/7b799aed44581cc79b02033532c5f775/_ppx.ml)
+$ (cd _build/default && .ppx/7b799aed44581cc79b02033532c5f775/ppx.exe --cookie 'library-name="js_utils"' -o src/js_utils.pp.ml --impl src/js_utils.ml --dump-ast)
+$ (cd _build/default && .ppx/7b799aed44581cc79b02033532c5f775/ppx.exe --cookie 'library-name="js_utils"' -o src/js_utils.pp.mli --intf src/js_utils.mli --dump-ast)
+$ (cd _build/default && /home/teillet/.opam/4.07.1/bin/ocamldep.opt -modules -impl src/js_utils.pp.ml) > _build/default/src/.js_utils.objs/js_utils.pp.ml.d
+$ (cd _build/default && /home/teillet/.opam/4.07.1/bin/ocamldep.opt -modules -intf src/js_utils.pp.mli) > _build/default/src/.js_utils.objs/js_utils.pp.mli.d
+$ (cd _build/default && /home/teillet/.opam/4.07.1/bin/ocamlc.opt -w -40 -g -bin-annot -I src/.js_utils.objs/byte -I /home/teillet/.opam/4.07.1/lib/bytes -I /home/teillet/.opam/4.07.1/lib/js_of_ocaml -I /home/teillet/.opam/4.07.1/lib/uchar -I src/.tableur.objs/byte -I src/.tableur.objs/native -no-alias-deps -o src/.js_utils.objs/byte/js_utils.cmi -c -intf src/js_utils.pp.mli)
+$ (cd _build/default && /home/teillet/.opam/4.07.1/bin/ocamlc.opt -w -40 -g -bin-annot -I src/.exceml.eobjs/byte -I /home/teillet/.opam/4.07.1/lib/angstrom -I /home/teillet/.opam/4.07.1/lib/bigarray-compat -I /home/teillet/.opam/4.07.1/lib/bigstringaf -I /home/teillet/.opam/4.07.1/lib/bytes -I /home/teillet/.opam/4.07.1/lib/js_of_ocaml -I /home/teillet/.opam/4.07.1/lib/uchar -I src/.js_utils.objs/byte -I src/.js_utils.objs/native -I src/.parser.objs/byte -I src/.parser.objs/native -I src/.parser_comb.objs/byte -I src/.parser_comb.objs/native -I src/.tableur.objs/byte -I src/.tableur.objs/native -no-alias-deps -o src/.exceml.eobjs/byte/dune__exe__Exceml.cmo -c -impl src/exceml.ml)
+$ (cd _build/default && /home/teillet/.opam/4.07.1/bin/ocamlc.opt -w -40 -g -bin-annot -I src/.js_utils.objs/byte -I /home/teillet/.opam/4.07.1/lib/bytes -I /home/teillet/.opam/4.07.1/lib/js_of_ocaml -I /home/teillet/.opam/4.07.1/lib/uchar -I src/.tableur.objs/byte -I src/.tableur.objs/native -intf-suffix .ml -no-alias-deps -o src/.js_utils.objs/byte/js_utils.cmo -c -impl src/js_utils.pp.ml)
+$ (cd _build/default && /home/teillet/.opam/4.07.1/bin/ocamlc.opt -w -40 -g -a -o src/js_utils.cma src/.js_utils.objs/byte/js_utils.cmo)
+$ (cd _build/default && /home/teillet/.opam/4.07.1/bin/ocamlc.opt -w -40 -g -o src/exceml.bc src/tableur.cma src/parser.cma /home/teillet/.opam/4.07.1/lib/bigarray-compat/bigarray_compat.cma /home/teillet/.opam/4.07.1/lib/bigstringaf/bigstringaf.cma /home/teillet/.opam/4.07.1/lib/angstrom/angstrom.cma src/parser_comb.cma /home/teillet/.opam/4.07.1/lib/js_of_ocaml/js_of_ocaml.cma src/js_utils.cma src/.exceml.eobjs/byte/dune__exe__Exceml.cmo)
+$ (cd _build/default/src && /home/teillet/.opam/4.07.1/bin/js_of_ocaml -o exceml.bc.js --no-runtime /home/teillet/.opam/4.07.1/lib/js_of_ocaml-compiler/runtime.js /home/teillet/.opam/4.07.1/lib/bigstringaf/runtime.js exceml.bc)

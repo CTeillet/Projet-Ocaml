@@ -1,0 +1,2 @@
+(** @canonical Parser_comb.Parser *)
+module Parser = Parser_comb__Parser

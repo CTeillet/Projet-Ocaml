@@ -10,6 +10,7 @@ and erreur =
   |Mauvais_indice of (int * int)
   |Cycle_detecte of (int * int)
   |Mauvais_argument of string
+  |Mauvais_arguments
 
 type expr =
   | Vide
@@ -63,6 +64,7 @@ let res_to_string expr =
       |Mauvais_indice (i,j) -> "Mauvais indice " ^"("^string_of_int i^","^string_of_int j^")"
       |Cycle_detecte (i,j) -> "Cycle Present"^"("^string_of_int i^","^string_of_int j^")"
       |Mauvais_argument s -> s
+      |_ -> "Mauvais Argument"
 
 let rec expr_to_string expr =
     match expr with
@@ -368,3 +370,24 @@ let moyenne (a:expr) (b:expr) =
   in
   let t = {app2=f; gauche=a; droite=b} in
   Binaire(t)
+
+let ( -- ) i j = List.init (j - i + 1) (fun x -> x + i)
+
+let rec product a b =
+  match a with
+  | [] ->
+      []
+  | hd :: tl ->
+      List.map (fun x -> (hd, x)) b @ product tl b
+
+let coords_of_plage (i, j) (i', j') =
+  let l = if i < i' then i -- i' else i' -- i in
+  let j = if j < j' then j -- j' else j' -- j in
+  product l j
+
+let int_to_letter j =
+  let ltval = j mod 26 in
+  let nb = (j - ltval) / 26 in
+  let nb = if nb = 0 then "" else string_of_int nb in
+  let lt = char_of_int (int_of_char 'A' + ltval) in
+  Format.sprintf "%c%s" lt nb

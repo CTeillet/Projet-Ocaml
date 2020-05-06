@@ -1,0 +1,20 @@
+EXCLUDE_QUERY_DIR
+B /home/teillet/.opam/4.07.1/lib/angstrom
+B /home/teillet/.opam/4.07.1/lib/bigarray-compat
+B /home/teillet/.opam/4.07.1/lib/bigstringaf
+B /home/teillet/.opam/4.07.1/lib/bytes
+B /home/teillet/.opam/4.07.1/lib/js_of_ocaml
+B /home/teillet/.opam/4.07.1/lib/uchar
+B ../_build/default/src/.exceml.eobjs/byte
+B ../_build/default/src/.js_utils.objs/byte
+B ../_build/default/src/.parser.objs/byte
+B ../_build/default/src/.parser_comb.objs/byte
+B ../_build/default/src/.tableur.objs/byte
+S /home/teillet/.opam/4.07.1/lib/angstrom
+S /home/teillet/.opam/4.07.1/lib/bigarray-compat
+S /home/teillet/.opam/4.07.1/lib/bigstringaf
+S /home/teillet/.opam/4.07.1/lib/bytes
+S /home/teillet/.opam/4.07.1/lib/js_of_ocaml
+S /home/teillet/.opam/4.07.1/lib/uchar
+S .
+FLG -w -40 -w -40 -open Parser_comb -w -40 -open Parser -w -40 -w -40
