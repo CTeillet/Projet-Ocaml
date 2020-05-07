@@ -1,10 +1,10 @@
 # dune build src/exceml.bc.js --profile release
 # OCAMLPARAM: unset
 # Workspace root: /home/teillet/Projet-Ocaml/partie2
-$ /usr/bin/nproc > /tmp/dunebba903.output 2> /dev/null
+$ /usr/bin/nproc > /tmp/dune018ea5.output 2> /dev/null
 # Auto-detected concurrency: 8
 # disable binary cache
-$ /home/teillet/.opam/4.07.1/bin/ocamlc.opt -config > /tmp/dune0e54eb.output
+$ /home/teillet/.opam/4.07.1/bin/ocamlc.opt -config > /tmp/dunef7f473.output
 # Dune context:
 #  { name = "default"
 #  ; kind = "default"
@@ -108,13 +108,13 @@ $ (cd _build/default && /home/teillet/.opam/4.07.1/bin/ocamlc.opt -w -40 -w -49 
 $ (cd _build/default && /home/teillet/.opam/4.07.1/bin/ocamldep.opt -modules -impl src/parser.ml) > _build/default/src/.parser_comb.objs/parser.ml.d
 $ (cd _build/default && /home/teillet/.opam/4.07.1/bin/ocamldep.opt -modules -impl src/exceml.ml) > _build/default/src/.exceml.eobjs/exceml.ml.d
 $ (cd _build/default && /bin/sh -c 'camlp4o src/ast.ml') > _build/default/src/ast.pp.ml
-$ (cd _build/default && /home/teillet/.opam/4.07.1/bin/ocamlc.opt -w -40 -g -bin-annot -I src/.tableur.objs/byte -no-alias-deps -o src/.tableur.objs/byte/tableur.cmo -c -impl src/tableur.ml)
 $ (cd _build/default && /home/teillet/.opam/4.07.1/bin/ocamldep.opt -modules -impl src/ast.pp.ml) > _build/default/src/.parser.objs/ast.pp.ml.d
+$ (cd _build/default && /home/teillet/.opam/4.07.1/bin/ocamlc.opt -w -40 -g -bin-annot -I src/.tableur.objs/byte -no-alias-deps -o src/.tableur.objs/byte/tableur.cmo -c -impl src/tableur.ml)
 $ (cd _build/default && /home/teillet/.opam/4.07.1/bin/ocamlc.opt -w -40 -g -a -o src/tableur.cma src/.tableur.objs/byte/tableur.cmo)
-$ (cd _build/default && /home/teillet/.opam/4.07.1/bin/ocamlc.opt -w -40 -g -bin-annot -I src/.parser_comb.objs/byte -I /home/teillet/.opam/4.07.1/lib/angstrom -I /home/teillet/.opam/4.07.1/lib/bigarray-compat -I /home/teillet/.opam/4.07.1/lib/bigstringaf -I src/.tableur.objs/byte -I src/.tableur.objs/native -no-alias-deps -open Parser_comb -o src/.parser_comb.objs/byte/parser_comb__Parser.cmo -c -impl src/parser.ml)
-$ (cd _build/default && /home/teillet/.opam/4.07.1/bin/ocamlc.opt -w -40 -g -a -o src/parser_comb.cma src/.parser_comb.objs/byte/parser_comb.cmo src/.parser_comb.objs/byte/parser_comb__Parser.cmo)
 $ (cd _build/default && /home/teillet/.opam/4.07.1/bin/ocamlc.opt -w -40 -g -bin-annot -I src/.parser.objs/byte -I src/.tableur.objs/byte -I src/.tableur.objs/native -no-alias-deps -open Parser -o src/.parser.objs/byte/parser__Ast.cmo -c -impl src/ast.pp.ml)
+$ (cd _build/default && /home/teillet/.opam/4.07.1/bin/ocamlc.opt -w -40 -g -bin-annot -I src/.parser_comb.objs/byte -I /home/teillet/.opam/4.07.1/lib/angstrom -I /home/teillet/.opam/4.07.1/lib/bigarray-compat -I /home/teillet/.opam/4.07.1/lib/bigstringaf -I src/.tableur.objs/byte -I src/.tableur.objs/native -no-alias-deps -open Parser_comb -o src/.parser_comb.objs/byte/parser_comb__Parser.cmo -c -impl src/parser.ml)
 $ (cd _build/default && /home/teillet/.opam/4.07.1/bin/ocamlc.opt -w -40 -g -a -o src/parser.cma src/.parser.objs/byte/parser.cmo src/.parser.objs/byte/parser__Ast.cmo)
+$ (cd _build/default && /home/teillet/.opam/4.07.1/bin/ocamlc.opt -w -40 -g -a -o src/parser_comb.cma src/.parser_comb.objs/byte/parser_comb.cmo src/.parser_comb.objs/byte/parser_comb__Parser.cmo)
 $ (cd _build/default && /home/teillet/.opam/4.07.1/bin/ocamlopt.opt -o .ppx/7b799aed44581cc79b02033532c5f775/ppx.exe -w -24 -I /home/teillet/.opam/4.07.1/lib/js_of_ocaml-ppx -I /home/teillet/.opam/4.07.1/lib/js_of_ocaml-ppx/as-lib -I /home/teillet/.opam/4.07.1/lib/ocaml-migrate-parsetree -I /home/teillet/.opam/4.07.1/lib/ocaml/compiler-libs -I /home/teillet/.opam/4.07.1/lib/ppx_derivers -I /home/teillet/.opam/4.07.1/lib/result /home/teillet/.opam/4.07.1/lib/ocaml/compiler-libs/ocamlcommon.cmxa /home/teillet/.opam/4.07.1/lib/result/result.cmxa /home/teillet/.opam/4.07.1/lib/ppx_derivers/ppx_derivers.cmxa /home/teillet/.opam/4.07.1/lib/ocaml-migrate-parsetree/migrate_parsetree.cmxa /home/teillet/.opam/4.07.1/lib/js_of_ocaml-ppx/as-lib/ppx_js.cmxa /home/teillet/.opam/4.07.1/lib/js_of_ocaml-ppx/ppx_js_rewriter.cmxa .ppx/7b799aed44581cc79b02033532c5f775/_ppx.ml)
 $ (cd _build/default && .ppx/7b799aed44581cc79b02033532c5f775/ppx.exe --cookie 'library-name="js_utils"' -o src/js_utils.pp.ml --impl src/js_utils.ml --dump-ast)
 $ (cd _build/default && .ppx/7b799aed44581cc79b02033532c5f775/ppx.exe --cookie 'library-name="js_utils"' -o src/js_utils.pp.mli --intf src/js_utils.mli --dump-ast)
@@ -122,6 +122,8 @@ $ (cd _build/default && /home/teillet/.opam/4.07.1/bin/ocamldep.opt -modules -im
 $ (cd _build/default && /home/teillet/.opam/4.07.1/bin/ocamldep.opt -modules -intf src/js_utils.pp.mli) > _build/default/src/.js_utils.objs/js_utils.pp.mli.d
 $ (cd _build/default && /home/teillet/.opam/4.07.1/bin/ocamlc.opt -w -40 -g -bin-annot -I src/.js_utils.objs/byte -I /home/teillet/.opam/4.07.1/lib/bytes -I /home/teillet/.opam/4.07.1/lib/js_of_ocaml -I /home/teillet/.opam/4.07.1/lib/uchar -I src/.tableur.objs/byte -I src/.tableur.objs/native -no-alias-deps -o src/.js_utils.objs/byte/js_utils.cmi -c -intf src/js_utils.pp.mli)
 $ (cd _build/default && /home/teillet/.opam/4.07.1/bin/ocamlc.opt -w -40 -g -bin-annot -I src/.exceml.eobjs/byte -I /home/teillet/.opam/4.07.1/lib/angstrom -I /home/teillet/.opam/4.07.1/lib/bigarray-compat -I /home/teillet/.opam/4.07.1/lib/bigstringaf -I /home/teillet/.opam/4.07.1/lib/bytes -I /home/teillet/.opam/4.07.1/lib/js_of_ocaml -I /home/teillet/.opam/4.07.1/lib/uchar -I src/.js_utils.objs/byte -I src/.js_utils.objs/native -I src/.parser.objs/byte -I src/.parser.objs/native -I src/.parser_comb.objs/byte -I src/.parser_comb.objs/native -I src/.tableur.objs/byte -I src/.tableur.objs/native -no-alias-deps -o src/.exceml.eobjs/byte/dune__exe__Exceml.cmo -c -impl src/exceml.ml)
+> File "src/exceml.ml", line 59, characters 6-7:
+> Warning 26: unused variable g.
 $ (cd _build/default && /home/teillet/.opam/4.07.1/bin/ocamlc.opt -w -40 -g -bin-annot -I src/.js_utils.objs/byte -I /home/teillet/.opam/4.07.1/lib/bytes -I /home/teillet/.opam/4.07.1/lib/js_of_ocaml -I /home/teillet/.opam/4.07.1/lib/uchar -I src/.tableur.objs/byte -I src/.tableur.objs/native -intf-suffix .ml -no-alias-deps -o src/.js_utils.objs/byte/js_utils.cmo -c -impl src/js_utils.pp.ml)
 $ (cd _build/default && /home/teillet/.opam/4.07.1/bin/ocamlc.opt -w -40 -g -a -o src/js_utils.cma src/.js_utils.objs/byte/js_utils.cmo)
 $ (cd _build/default && /home/teillet/.opam/4.07.1/bin/ocamlc.opt -w -40 -g -o src/exceml.bc src/tableur.cma src/parser.cma /home/teillet/.opam/4.07.1/lib/bigarray-compat/bigarray_compat.cma /home/teillet/.opam/4.07.1/lib/bigstringaf/bigstringaf.cma /home/teillet/.opam/4.07.1/lib/angstrom/angstrom.cma src/parser_comb.cma /home/teillet/.opam/4.07.1/lib/js_of_ocaml/js_of_ocaml.cma src/js_utils.cma src/.exceml.eobjs/byte/dune__exe__Exceml.cmo)

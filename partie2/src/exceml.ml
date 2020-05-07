@@ -54,9 +54,16 @@ let cells_of_string storage_grid = assert false (* TODO *)
 
 let update i j grid infos_grid = assert false (* TODO *)
 
-let add_cell_events i j grid infos_grid = assert false (* TODO *)
+let add_cell_events i j (grid:grid) (infos_grid:infos_grid) = (* Question 3 *)
+  let c = infos_grid.(i).(j) in
+  let g = grid.(i).(j) in
+  Dom.Events.set_ondblclick c.container (fun _ -> Dom.Class.add c.inp "editing-input"; Dom.Focus.focus c.inp);
+  Dom.Events.set_onblur c.inp (fun _ -> Dom.Text.set_content c.txt (Dom.Input.get_value c.inp); Dom.Class.remove c.inp "editing-input");
+  Dom.Events.set_onkeydown c.inp (fun a  -> if a=13 then
+                                                        Dom.Focus.blur c.inp;
+                                                        true)
 
-let build_cell cells = (* mk_cell () TODO Question 1 *)
+let build_cell cells = (* Question 1 & 2*)
   let c = mk_cell () in
   Dom.appendChild c.container c.inp;
   Dom.appendChild c.container c.txt;
