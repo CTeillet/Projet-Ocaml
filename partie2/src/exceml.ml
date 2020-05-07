@@ -49,8 +49,9 @@ let update_deps infos_grid i j expr = assert false (* TODO *)
 let propagate grid infos_grid i j = assert false (* TODO *)
 
 let grid_to_string grid infos_grid = (* Question 4 *)
-  let res = "" in
-  Array.iteri (fun i e -> Array.iteri (fun j f-> Printf.sprintf "%d|%d|%s" i j  (Dom.Input.get_value f.inp)) e) infos_grid
+  let res = ref [] in
+  Array.iteri (fun i e -> Array.iteri (fun j f -> if grid.(i).(j) != Tableur.Vide then res := (Printf.sprintf "%d|%d|%s" i j  (Dom.Input.get_value f.inp))::!res) e) infos_grid;
+  !res
 
 let cells_of_string storage_grid = assert false (* TODO *)
 
