@@ -92,7 +92,11 @@ let load_grids height width =
   in
   (grid, infos_grid)
 
-let load_storage grid infos_grid = ()
+let load_storage grid infos_grid = 
+  let r = Storage.find () in
+  match r with
+    |None -> ()
+    |Some s -> let t  
 
 let main () =
   let height = 10 in
