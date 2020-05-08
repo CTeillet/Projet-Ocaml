@@ -58,7 +58,7 @@ let grid_to_string grid infos_grid = (* Question 4 *)
 let cells_of_string storage_grid = (* Question 5 *)
   let r = String.split_on_char '\n' storage_grid in
   let res = ref [] in
-  List.iter (fun (i:string) -> let t = String.split_on_char '|' i in if (List.length t) = 3 then res:=(List.nth t 0, List.nth t 1, List.nth t 2)::!res ) r;
+  List.iter (fun (i:string) -> let t = String.split_on_char '|' i in if (List.length t) = 3 then res:=(int_of_string (List.nth t 0), int_of_string (List.nth t 1), List.nth t 2)::!res ) r;
   !res
 
 let update i j grid infos_grid = assert false (* TODO *)
@@ -96,7 +96,8 @@ let load_storage grid infos_grid =
   let r = Storage.find () in
   match r with
     |None -> ()
-    |Some s -> let t  
+    |Some s -> let t  = cells_of_string s in
+                  List.iter (fun i -> let (a,b,c) = i in Dom.Input.set_value infos_grid.(a).(b).inp c;Dom.Text.set_content infos_grid.(a).(b).txt c) t
 
 let main () =
   let height = 10 in
