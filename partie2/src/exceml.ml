@@ -102,7 +102,7 @@ let load_storage grid infos_grid =
   match r with
     |None -> ()
     |Some s -> let t  = cells_of_string s in
-                  List.iter (fun i -> let (a,b,c) = i in Dom.Input.set_value infos_grid.(a).(b).inp c;Dom.Text.set_content infos_grid.(a).(b).txt c) t
+                  List.iter (fun i -> let (a,b,c) = i in Dom.Input.set_value infos_grid.(a).(b).inp c; Dom.Text.set_content infos_grid.(a).(b).txt c; update a b grid infos_grid) t
 
 let main () =
   let height = 10 in
