@@ -69,7 +69,7 @@ let update (i:int) (j:int) (grid:grid) (infos_grid:infos_grid) = (* Question 9 *
                                               Dom.Focus.blur c.inp;
                                               true);
   match Ast.make (Dom.Input.get_value infos_grid.(i).(j).inp) with 
-    |Ok expr -> grid.(i).(j) <- expr
+    |Ok expr -> grid.(i).(j) <- expr; c.result <- Tableur.eval_expr grid (grid.(i).(j))
     |_ -> Dom.Class.add c.container "editing-input"
   
 
