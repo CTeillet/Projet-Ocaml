@@ -42,7 +42,8 @@ let mk_cell ?(inp = Dom.Create.input ()) ?(container = Dom.Create.div ())
 
 let error_to_string e = assert false (* TODO *)
 
-let resultat_to_string r = assert false (* TODO *)
+let resultat_to_string r = (* Question 12 *)
+  Tableur.res_to_string r
 
 let update_display grid i j r = assert false (* TODO *)
 
