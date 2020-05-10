@@ -61,16 +61,21 @@ let cells_of_string storage_grid = (* Question 5 *)
   List.iter (fun (i:string) -> let t = String.split_on_char '|' i in if (List.length t) = 3 then res:=(int_of_string (List.nth t 0), int_of_string (List.nth t 1), List.nth t 2)::!res ) r;
   !res
 
-let update i j grid infos_grid = assert false (* TODO *)
-
-let add_cell_events i j (grid:grid) (infos_grid:infos_grid) = (* Question 3 & 6 *)
+let update (i:int) (j:int) (grid:grid) (infos_grid:infos_grid) = (* Question 9 *)
   let c = infos_grid.(i).(j) in
-  let g = grid.(i).(j) in
   Dom.Events.set_ondblclick c.container (fun _ -> Dom.Class.add c.inp "editing-input"; Dom.Focus.focus c.inp);
   Dom.Events.set_onblur c.inp (fun _ -> Dom.Text.set_content c.txt (Dom.Input.get_value c.inp); Dom.Class.remove c.inp "editing-input"; Storage.set (grid_to_string grid infos_grid););
   Dom.Events.set_onkeydown c.inp (fun a  -> if a=13 then
                                               Dom.Focus.blur c.inp;
-                                              true)
+                                              true);
+  match Ast.make (Dom.Input.get_value infos_grid.(i).(j).inp) with 
+    |Ok expr -> grid.(i).(j) <- expr
+    |_ -> Dom.Class.add c.container "editing-input"
+  
+
+
+let add_cell_events i j (grid:grid) (infos_grid:infos_grid) = (* Question 3 & 6 *)
+  update i j grid infos_grid
 
 let build_cell cells = (* Question 1 & 2*)
   let c = mk_cell () in
