@@ -45,9 +45,13 @@ let error_to_string e = assert false (* TODO *)
 let resultat_to_string r = (* Question 12 *)
   Tableur.res_to_string r
 
-let update_display infos_grid i j r = (* Question 13 *)
-  let chaine = (resultat_to_string r) in
-  Dom.Text.set_content infos_grid.(i).(j).txt chaine
+let update_display (infos_grid:infos_grid) i j (r:Tableur.resultat) = (* Question 13 *)
+  match r with
+  | Tableur.Erreur e-> Dom.Class.add infos_grid.(i).(j).container "cell-error"
+  | _ -> let chaine = (resultat_to_string r) in
+         Dom.Text.set_content infos_grid.(i).(j).txt chaine;
+         Dom.Class.remove infos_grid.(i).(j).container "cell-error"
+  
 
 let update_deps infos_grid i j expr = assert false (* TODO *)
 
@@ -70,24 +74,21 @@ let update (i:int) (j:int) (grid:grid) (infos_grid:infos_grid) = (* Question 9 *
   Dom.Events.set_onblur c.inp (fun _ -> Dom.Text.set_content c.txt (Dom.Input.get_value c.inp); 
                                         Dom.Class.remove c.inp "editing-input"; 
                                         Storage.set (grid_to_string grid infos_grid);
-                                        print_int 3;print_newline();
                                         match Ast.make (Dom.Input.get_value infos_grid.(i).(j).inp) with 
                                           |Ok expr -> grid.(i).(j) <- expr;
                                                       c.result <- Tableur.eval_expr grid (grid.(i).(j)); 
-                                                      update_display infos_grid i j c.result; 
-                                                      print_int 1;print_newline();
-                                          |_ -> Dom.Class.add c.container "editing-input"; 
-                                                      print_int 2;print_newline());
+                                                      update_display infos_grid i j c.result;
+                                          |_ -> Dom.Class.add infos_grid.(i).(j).container "cell-error");
   Dom.Events.set_onkeydown c.inp (fun a  -> if a=13 then
                                               Dom.Focus.blur c.inp;
                                               true)
-  
-   
-  
-
-
 let add_cell_events i j (grid:grid) (infos_grid:infos_grid) = (* Question 3 & 6 *)
-  update i j grid infos_grid
+  update i j grid infos_grid;
+  match Ast.make (Dom.Input.get_value infos_grid.(i).(j).inp) with 
+  |Ok expr -> grid.(i).(j) <- expr;
+              infos_grid.(i).(j).result <- Tableur.eval_expr grid (grid.(i).(j)); 
+              update_display infos_grid i j infos_grid.(i).(j).result;
+  |_ -> ()
 
 let build_cell cells = (* Question 1 & 2*)
   let c = mk_cell () in
