@@ -10,6 +10,8 @@ type cell_infos = {
   inp : Dom.input;
   txt : Dom.txt;
   mutable result : Tableur.resultat;
+  mutable parent_deps : (int*int) list;
+  mutable child_deps : (int*int) list;
 }
 
 exception Mauvais_Format of string
@@ -37,8 +39,8 @@ type grid = Tableur.expr array array
 type infos_grid = cell_infos array array
 
 let mk_cell ?(inp = Dom.Create.input ()) ?(container = Dom.Create.div ())
-    ?(txt = Dom.Create.txt " ") ?(result = Tableur.RVide) () =
-  {inp; container; txt; result}
+    ?(txt = Dom.Create.txt " ") ?(result = Tableur.RVide) ?(parent_deps = []) ?(child_deps = [])() =
+  {inp; container; txt; result; parent_deps; child_deps}
 
 let error_to_string e = assert false (* TODO *)
 
@@ -59,13 +61,16 @@ let propagate grid infos_grid i j = assert false (* TODO *)
 
 let grid_to_string grid infos_grid = (* Question 4 *)
   let res = ref [] in
-  Array.iteri (fun i e -> Array.iteri (fun j f -> if Dom.Input.get_value (infos_grid.(i).(j).inp) != "" then res := (Printf.sprintf "%d|%d|%s" i j  (Dom.Input.get_value f.inp))::!res) e) infos_grid;
+  Array.iteri (fun i e -> Array.iteri (fun j f -> if Dom.Input.get_value (infos_grid.(i).(j).inp) != "" then 
+                                                    res := (Printf.sprintf "%d|%d|%s" i j  (Dom.Input.get_value f.inp))::!res) e)   infos_grid;
   String.concat "\n" !res
 
 let cells_of_string storage_grid = (* Question 5 *)
   let r = String.split_on_char '\n' storage_grid in
   let res = ref [] in
-  List.iter (fun (i:string) -> let t = String.split_on_char '|' i in if (List.length t) = 3 then res:=(int_of_string (List.nth t 0), int_of_string (List.nth t 1), List.nth t 2)::!res ) r;
+  List.iter (fun (i:string) ->  let t = String.split_on_char '|' i in 
+                                if (List.length t) = 3 then
+                                  res := (int_of_string (List.nth t 0), int_of_string (List.nth t 1), List.nth t 2) :: !res )  r;
   !res
 
 let update (i:int) (j:int) (grid:grid) (infos_grid:infos_grid) = (* Question 9 *)
@@ -78,7 +83,7 @@ let update (i:int) (j:int) (grid:grid) (infos_grid:infos_grid) = (* Question 9 *
                                           |Ok expr -> grid.(i).(j) <- expr;
                                                       c.result <- Tableur.eval_expr grid (grid.(i).(j)); 
                                                       update_display infos_grid i j c.result;
-                                          |_ -> Dom.Class.add infos_grid.(i).(j).container "cell-error");
+                                          |_ ->() (*Dom.Class.add infos_grid.(i).(j).container "cell-error"*));
   Dom.Events.set_onkeydown c.inp (fun a  -> if a=13 then
                                               Dom.Focus.blur c.inp;
                                               true)
@@ -115,7 +120,9 @@ let load_storage grid infos_grid =
   match r with
     |None -> ()
     |Some s -> let t  = cells_of_string s in
-                  List.iter (fun i -> let (a,b,c) = i in Dom.Input.set_value infos_grid.(a).(b).inp c; Dom.Text.set_content infos_grid.(a).(b).txt c; update a b grid infos_grid) t
+                  List.iter (fun i -> let (a,b,c) = i in 
+                                      Dom.Input.set_value infos_grid.(a).(b).inp c;
+                                      Dom.Text.set_content infos_grid.(a).(b).txt c; update a b grid infos_grid) t
 
 let main () =
   let height = 10 in
