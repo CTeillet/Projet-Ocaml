@@ -45,7 +45,9 @@ let error_to_string e = assert false (* TODO *)
 let resultat_to_string r = (* Question 12 *)
   Tableur.res_to_string r
 
-let update_display grid i j r = assert false (* TODO *)
+let update_display infos_grid i j r = (* Question 13 *)
+  let chaine = (resultat_to_string r) in
+  Dom.Text.set_content infos_grid.(i).(j).txt chaine
 
 let update_deps infos_grid i j expr = assert false (* TODO *)
 
@@ -65,13 +67,22 @@ let cells_of_string storage_grid = (* Question 5 *)
 let update (i:int) (j:int) (grid:grid) (infos_grid:infos_grid) = (* Question 9 *)
   let c = infos_grid.(i).(j) in
   Dom.Events.set_ondblclick c.container (fun _ -> Dom.Class.add c.inp "editing-input"; Dom.Focus.focus c.inp);
-  Dom.Events.set_onblur c.inp (fun _ -> Dom.Text.set_content c.txt (Dom.Input.get_value c.inp); Dom.Class.remove c.inp "editing-input"; Storage.set (grid_to_string grid infos_grid););
+  Dom.Events.set_onblur c.inp (fun _ -> Dom.Text.set_content c.txt (Dom.Input.get_value c.inp); 
+                                        Dom.Class.remove c.inp "editing-input"; 
+                                        Storage.set (grid_to_string grid infos_grid);
+                                        print_int 3;print_newline();
+                                        match Ast.make (Dom.Input.get_value infos_grid.(i).(j).inp) with 
+                                          |Ok expr -> grid.(i).(j) <- expr;
+                                                      c.result <- Tableur.eval_expr grid (grid.(i).(j)); 
+                                                      update_display infos_grid i j c.result; 
+                                                      print_int 1;print_newline();
+                                          |_ -> Dom.Class.add c.container "editing-input"; 
+                                                      print_int 2;print_newline());
   Dom.Events.set_onkeydown c.inp (fun a  -> if a=13 then
                                               Dom.Focus.blur c.inp;
-                                              true);
-  match Ast.make (Dom.Input.get_value infos_grid.(i).(j).inp) with 
-    |Ok expr -> grid.(i).(j) <- expr; c.result <- Tableur.eval_expr grid (grid.(i).(j))
-    |_ -> Dom.Class.add c.container "editing-input"
+                                              true)
+  
+   
   
 
 
