@@ -54,10 +54,11 @@ let update_display (infos_grid:infos_grid) i j (r:Tableur.resultat) = (* Questio
          Dom.Text.set_content infos_grid.(i).(j).txt chaine;
          Dom.Class.remove infos_grid.(i).(j).container "cell-error"
   
-
-let update_deps (infos_grid:infos_grid) i j (expr:Tableur.expr) =
+let update_deps (infos_grid:infos_grid) (i:int) j (expr:Tableur.expr) =
   let parent_deps = direct_deps expr in
-  infos_grid.(i).(j).parent_deps @ parent_deps
+  infos_grid.(i).(j).parent_deps <-infos_grid.(i).(j).parent_deps @ parent_deps;
+  let p c =  if (((fst c) = i) && ((snd c) = j)) then true else false in
+  Array.iteri (fun k a -> Array.iteri (fun l b -> if (List.exists p b.parent_deps ) then infos_grid.(i).(j).child_deps <-infos_grid.(i).(j).child_deps @ [(k,l)] ) a) infos_grid
 
 let propagate grid infos_grid i j = assert false (* TODO *)
 
