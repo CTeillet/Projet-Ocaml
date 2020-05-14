@@ -55,7 +55,9 @@ let update_display (infos_grid:infos_grid) i j (r:Tableur.resultat) = (* Questio
          Dom.Class.remove infos_grid.(i).(j).container "cell-error"
   
 
-let update_deps infos_grid i j expr = assert false (* TODO *)
+let update_deps (infos_grid:infos_grid) i j (expr:Tableur.expr) =
+  let parent_deps = direct_deps expr in
+  infos_grid.(i).(j).parent_deps @ parent_deps
 
 let propagate grid infos_grid i j = assert false (* TODO *)
 

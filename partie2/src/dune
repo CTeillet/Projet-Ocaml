@@ -12,13 +12,6 @@
  (preprocess (pps js_of_ocaml-ppx))
 )
 
-
-(library
- (name parser_comb)
- (libraries tableur angstrom)
- (modules parser)
-)
-
 (library
  (name parser)
  (libraries tableur)
@@ -30,7 +23,7 @@
 
 (executable
  (name exceml)
- (libraries tableur parser parser_comb js_utils)
+ (libraries tableur parser js_utils)
  (modules exceml)
  (modes js)
 )
