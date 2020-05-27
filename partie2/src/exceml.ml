@@ -55,12 +55,26 @@ let update_display (infos_grid:infos_grid) i j (r:Tableur.resultat) = (* Questio
          Dom.Class.remove infos_grid.(i).(j).container "cell-error"
   
 let update_deps (infos_grid:infos_grid) (i:int) j (expr:Tableur.expr) =
-  let parent_deps = direct_deps expr in
-  infos_grid.(i).(j).parent_deps <-infos_grid.(i).(j).parent_deps @ parent_deps;
-  let p c =  if (((fst c) = i) && ((snd c) = j)) then true else false in
-  Array.iteri (fun k a -> Array.iteri (fun l b -> if (List.exists p b.parent_deps ) then infos_grid.(i).(j).child_deps <-infos_grid.(i).(j).child_deps @ [(k,l)] ) a) infos_grid
+  let child = direct_deps expr in
+  List.iter (
+    fun cell -> if (List.mem cell child = false) then
+        let a,b = cell in
+        infos_grid.(a).(b).parent_deps <- List.filter (fun x -> x <> (i,j)) infos_grid.(a).(b).parent_deps
+  )infos_grid.(i).(j).child_deps;
+  infos_grid.(i).(j).child_deps <- child;
+  List.iter (
+    fun elem -> let c,d = elem in
+      if( List.mem (i,j) infos_grid.(c).(d).parent_deps = false) then
+          infos_grid.(c).(d).parent_deps <- (i,j)::infos_grid.(c).(d).parent_deps
+  ) infos_grid.(i).(j).child_deps
 
-let propagate grid infos_grid i j = assert false (* TODO *)
+let rec  propagate grid infos_grid i j = (* Question 15 *)
+  List.iter (fun a -> let e = fst a in
+                         let f = snd a in
+                        infos_grid.(e).(f).result <- Tableur.eval_expr grid (grid.(i).(j));
+                        update_display infos_grid e f infos_grid.(e).(f).result;
+                        propagate grid infos_grid e f
+                         ) infos_grid.(i).(j).child_deps
 
 let grid_to_string grid infos_grid = (* Question 4 *)
   let res = ref [] in
@@ -86,6 +100,7 @@ let update (i:int) (j:int) (grid:grid) (infos_grid:infos_grid) = (* Question 9 *
                                           |Ok expr -> grid.(i).(j) <- expr;
                                                       c.result <- Tableur.eval_expr grid (grid.(i).(j)); 
                                                       update_display infos_grid i j c.result;
+                                                      propagate grid infos_grid i j
                                           |_ ->() (*Dom.Class.add infos_grid.(i).(j).container "cell-error"*));
   Dom.Events.set_onkeydown c.inp (fun a  -> if a=13 then
                                               Dom.Focus.blur c.inp;
